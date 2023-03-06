@@ -18,11 +18,11 @@ class HR < Department
     puts "Expertise           - #{expertise}"
   end
 
-  def recruitment
+  def recruit
     puts 'HR department manages recruitment of freshers of experience candidates'
   end
 
-  def selection_criteria(degree)
+  def eligible(degree)
     if DEGREE.include?(degree)
       puts 'Eligible for further process'
     else

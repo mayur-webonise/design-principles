@@ -6,9 +6,9 @@ require 'module'
 
 
 class Company
-include Read_CSV_File
+include FileUtility
   attr_accessor :company_id, :company_name, :company_type, :headquarter, :founded
-  @@no_of_employees = 0
+  @no_of_employees = 0
   
 
   def initialize(company_id, company_name, company_type, headquarter, founded)
@@ -17,10 +17,14 @@ include Read_CSV_File
     @company_type = company_type
     @headquarter = headquarter
     @founded = founded
-    hr_object = HR.new(0o01, 'HR', 'recruitment, selection, placement, socialisation')
-    qa_object=QA.new(0o02, 'QA', 'Good')
-    @departments = [hr_object,qa_object]
+    initialize_departments()
   end
+
+  def initialize_departments
+    hr = HR.new(0o01, 'HR', 'recruitment, selection, placement, socialisation')
+    qa =QA.new(0o02, 'QA', 'Good')
+    @departments = [hr,qa]
+    end
 
   def show_details
     puts "Here's the information for #{company_name}"
@@ -34,7 +38,7 @@ include Read_CSV_File
   def create_employee(employee_hash)
     @dept_id=search_department(employee_hash['department_key'])
      unless @dept_id.nil?
-      empobj=Employee.new(employee_hash['employee_id'],employee_hash['employee_name'],employee_hash['age'],employee_hash['birth_date'],employee_hash['address'],@dept_id)
+      empobj=Employee.new(employee_hash,@dept_id)
       write_csv(empobj)
       @@no_of_employees += 1
      else 
@@ -45,7 +49,7 @@ include Read_CSV_File
   def search_department(department_key)
     @departments.each do |i|
       if i.department_name == department_key
-         @temp=i.department_id
+         temp=i.department_id
         break
       end    
     end
@@ -53,7 +57,7 @@ include Read_CSV_File
   end
 
   def write_csv(emp_obj)
-    Read_CSV_File.write_file(emp_obj.employee_id,emp_obj.employee_name,emp_obj.age,emp_obj.birth_date,emp_obj.address,emp_obj.department_id)
+    FileUtility.write_file(emp_obj.employee_id,emp_obj.employee_name,emp_obj.age,emp_obj.birth_date,emp_obj.address,emp_obj.department_id)
   end
 
 end

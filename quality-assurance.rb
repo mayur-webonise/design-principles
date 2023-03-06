@@ -18,11 +18,11 @@ class QA < Department
     puts "Quality             - #{quality}"
   end
 
-  def testing
+  def test
     puts "#{department_name} departments main goal of the Quality Assurance (QA) department is to help create a quality product. "
   end
 
-  def selection_criteria(degree)
+  def eligible(degree)
     if DEGREE.include?(degree)
       puts 'Eligible for further process'
     else
